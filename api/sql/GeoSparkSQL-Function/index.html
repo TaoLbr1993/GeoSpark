@@ -759,6 +759,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#st_asgeojson" title="ST_AsGeoJSON" class="md-nav__link">
+    ST_AsGeoJSON
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#st_npoints" title="ST_NPoints" class="md-nav__link">
     ST_NPoints
   </a>
@@ -1245,6 +1252,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#st_asgeojson" title="ST_AsGeoJSON" class="md-nav__link">
+    ST_AsGeoJSON
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#st_npoints" title="ST_NPoints" class="md-nav__link">
     ST_NPoints
   </a>
@@ -1541,6 +1555,14 @@ The new coordinates will only have 9 decimal places.</p>
 <p>Since: <code class="codehilite">v1.2.0</code></p>
 <p>Spark SQL example:
 <div class="codehilite"><pre><span></span><span class="k">SELECT</span> <span class="n">ST_AsText</span><span class="p">(</span><span class="n">polygondf</span><span class="p">.</span><span class="n">countyshape</span><span class="p">)</span>
+<span class="k">FROM</span> <span class="n">polygondf</span>
+</pre></div></p>
+<h2 id="st_asgeojson">ST_AsGeoJSON<a class="headerlink" href="#st_asgeojson" title="Permanent link">&para;</a></h2>
+<p>Introduction: Return the <a href="https://geojson.org/">GeoJSON</a> string representation of a geometry</p>
+<p>Format: <code class="codehilite">ST_AsGeoJSON (A:geometry)</code></p>
+<p>Since: <code class="codehilite">v1.3.2</code></p>
+<p>Spark SQL example:
+<div class="codehilite"><pre><span></span><span class="k">SELECT</span> <span class="n">ST_AsGeoJSON</span><span class="p">(</span><span class="n">polygondf</span><span class="p">.</span><span class="n">countyshape</span><span class="p">)</span>
 <span class="k">FROM</span> <span class="n">polygondf</span>
 </pre></div></p>
 <h2 id="st_npoints">ST_NPoints<a class="headerlink" href="#st_npoints" title="Permanent link">&para;</a></h2>

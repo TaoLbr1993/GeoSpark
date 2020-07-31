@@ -1651,9 +1651,9 @@ Use the following code to create a PointRDD</p>
 <p>For polygon data, the last coordinate must be the same as the first coordinate because a polygon is a closed linear ring.</p>
 </div>
 <p>Use the following code to create a PolygonRDD.
-<div class="codehilite"><pre><span></span><span class="k">val</span> <span class="n">polygonRDDInputLocation</span> <span class="k">=</span> <span class="s">&quot;/Download/checkin.csv&quot;</span>
+<div class="codehilite"><pre><span></span><span class="k">val</span> <span class="n">polygonRDDInputLocation</span> <span class="k">=</span> <span class="s">&quot;/Download/checkinshape.csv&quot;</span>
 <span class="k">val</span> <span class="n">polygonRDDStartOffset</span> <span class="k">=</span> <span class="mi">0</span> <span class="c1">// The coordinates start from Column 0</span>
-<span class="k">val</span> <span class="n">polygonRDDEndOffset</span> <span class="k">=</span> <span class="mi">8</span> <span class="c1">// The coordinates end at Column 8</span>
+<span class="k">val</span> <span class="n">polygonRDDEndOffset</span> <span class="k">=</span> <span class="mi">9</span> <span class="c1">// The coordinates end at Column 9</span>
 <span class="k">val</span> <span class="n">polygonRDDSplitter</span> <span class="k">=</span> <span class="nc">FileDataSplitter</span><span class="o">.</span><span class="nc">CSV</span>
 <span class="k">val</span> <span class="n">carryOtherAttributes</span> <span class="k">=</span> <span class="kc">true</span> <span class="c1">// Carry Column 10 (hotel, gas, bar...)</span>
 <span class="k">var</span> <span class="n">objectRDD</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">PolygonRDD</span><span class="o">(</span><span class="n">sc</span><span class="o">,</span> <span class="n">polygonRDDInputLocation</span><span class="o">,</span> <span class="n">polygonRDDStartOffset</span><span class="o">,</span> <span class="n">polygonRDDEndOffset</span><span class="o">,</span> <span class="n">polygonRDDSplitter</span><span class="o">,</span> <span class="n">carryOtherAttributes</span><span class="o">)</span>
@@ -1667,14 +1667,14 @@ Use the following code to create a PointRDD</p>
 <h4 id="from-wktwkb">From WKT/WKB<a class="headerlink" href="#from-wktwkb" title="Permanent link">&para;</a></h4>
 <p>Geometries in a WKT and WKB file always occupy a single column no matter how many coordinates they have. Therefore, creating a typed SpatialRDD is easy.</p>
 <p>Suppose we have a <code class="codehilite">checkin.tsv</code> WKT TSV file at Path <code class="codehilite">/Download/checkin.tsv</code> as follows:
-<div class="codehilite"><pre><span></span>POINT (-88.331492,32.324142)    hotel
-POINT (-88.175933,32.360763)    gas
-POINT (-88.388954,32.357073)    bar
-POINT (-88.221102,32.35078) restaurant
+<div class="codehilite"><pre><span></span>POINT (-88.331492 32.324142)    hotel
+POINT (-88.175933 32.360763)    gas
+POINT (-88.388954 32.357073)    bar
+POINT (-88.221102 32.35078) restaurant
 </pre></div>
 This file has two columns and corresponding <mark>offsets</mark>(Column IDs) are 0, 1. Column 0 is the WKT string and Column 1 is the checkin business type.</p>
 <p>Use the following code to create a SpatialRDD</p>
-<div class="codehilite"><pre><span></span><span class="k">val</span> <span class="n">inputLocation</span> <span class="k">=</span> <span class="s">&quot;/Download/checkin.csv&quot;</span>
+<div class="codehilite"><pre><span></span><span class="k">val</span> <span class="n">inputLocation</span> <span class="k">=</span> <span class="s">&quot;/Download/checkin.tsv&quot;</span>
 <span class="k">val</span> <span class="n">wktColumn</span> <span class="k">=</span> <span class="mi">0</span> <span class="c1">// The WKT string starts from Column 0</span>
 <span class="k">val</span> <span class="n">allowTopologyInvalidGeometries</span> <span class="k">=</span> <span class="kc">true</span> <span class="c1">// Optional</span>
 <span class="k">val</span> <span class="n">skipSyntaxInvalidGeometries</span> <span class="k">=</span> <span class="kc">false</span> <span class="c1">// Optional</span>
@@ -1729,7 +1729,7 @@ via <code class="codehilite">geospark.global.charset</code> system property befo
 <p>We use <a href="#pointrdd-from-csvtsv">checkin.csv CSV file</a> as the example. You can create a generic SpatialRDD using the following steps:</p>
 <ol>
 <li>Load data in GeoSparkSQL.
-<div class="codehilite"><pre><span></span><span class="k">var</span> <span class="n">df</span> <span class="k">=</span> <span class="n">sparkSession</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">format</span><span class="o">(</span><span class="s">&quot;csv&quot;</span><span class="o">).</span><span class="n">option</span><span class="o">(</span><span class="s">&quot;delimiter&quot;</span><span class="o">,</span> <span class="s">&quot;\t&quot;</span><span class="o">).</span><span class="n">option</span><span class="o">(</span><span class="s">&quot;header&quot;</span><span class="o">,</span> <span class="s">&quot;false&quot;</span><span class="o">).</span><span class="n">load</span><span class="o">(</span><span class="n">csvPointInputLocation</span><span class="o">)</span>
+<div class="codehilite"><pre><span></span><span class="k">var</span> <span class="n">df</span> <span class="k">=</span> <span class="n">sparkSession</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">format</span><span class="o">(</span><span class="s">&quot;csv&quot;</span><span class="o">).</span><span class="n">option</span><span class="o">(</span><span class="s">&quot;header&quot;</span><span class="o">,</span> <span class="s">&quot;false&quot;</span><span class="o">).</span><span class="n">load</span><span class="o">(</span><span class="n">csvPointInputLocation</span><span class="o">)</span>
 <span class="n">df</span><span class="o">.</span><span class="n">createOrReplaceTempView</span><span class="o">(</span><span class="s">&quot;inputtable&quot;</span><span class="o">)</span>
 </pre></div></li>
 <li>Create a Geometry type column in GeoSparkSQL
@@ -1805,7 +1805,7 @@ via <code class="codehilite">geospark.global.charset</code> system property befo
 
 <p>The code to create a line string (with 4 vertexes) is as follows:</p>
 <div class="codehilite"><pre><span></span><span class="k">val</span> <span class="n">geometryFactory</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">GeometryFactory</span><span class="o">()</span>
-<span class="k">val</span> <span class="n">coordinates</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Array</span><span class="o">[</span><span class="kt">Coordinate</span><span class="o">](</span><span class="mi">5</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">coordinates</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Array</span><span class="o">[</span><span class="kt">Coordinate</span><span class="o">](</span><span class="mi">4</span><span class="o">)</span>
 <span class="n">coordinates</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Coordinate</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">)</span>
 <span class="n">coordinates</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Coordinate</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">4</span><span class="o">)</span>
 <span class="n">coordinates</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Coordinate</span><span class="o">(</span><span class="mi">4</span><span class="o">,</span><span class="mi">4</span><span class="o">)</span>
@@ -1862,7 +1862,7 @@ via <code class="codehilite">geospark.global.charset</code> system property befo
 
 
 <span class="k">val</span> <span class="n">buildOnSpatialPartitionedRDD</span> <span class="k">=</span> <span class="kc">false</span> <span class="c1">// Set to TRUE only if run join query</span>
-<span class="n">spatialRDD</span><span class="o">.</span><span class="n">buildIndex</span><span class="o">(</span><span class="nc">IndexType</span><span class="o">.</span><span class="nc">RTREE</span><span class="o">,</span> <span class="n">buildOnSpatialPartitionedRDD</span><span class="o">)</span>
+<span class="n">objectRDD</span><span class="o">.</span><span class="n">buildIndex</span><span class="o">(</span><span class="nc">IndexType</span><span class="o">.</span><span class="nc">RTREE</span><span class="o">,</span> <span class="n">buildOnSpatialPartitionedRDD</span><span class="o">)</span>
 
 <span class="k">val</span> <span class="n">usingIndex</span> <span class="k">=</span> <span class="kc">true</span>
 <span class="k">val</span> <span class="n">result</span> <span class="k">=</span> <span class="nc">KNNQuery</span><span class="o">.</span><span class="nc">SpatialKnnQuery</span><span class="o">(</span><span class="n">objectRDD</span><span class="o">,</span> <span class="n">pointObject</span><span class="o">,</span> <span class="n">K</span><span class="o">,</span> <span class="n">usingIndex</span><span class="o">)</span>
@@ -1974,7 +1974,7 @@ Find the super heros within 10 miles of each city</p>
 <h4 id="save-to-distributed-wkt-text-file">Save to distributed WKT text file<a class="headerlink" href="#save-to-distributed-wkt-text-file" title="Permanent link">&para;</a></h4>
 <p>Use the following code to save an SpatialRDD as a distributed WKT text file:</p>
 <div class="codehilite"><pre><span></span><span class="n">objectRDD</span><span class="o">.</span><span class="n">rawSpatialRDD</span><span class="o">.</span><span class="n">saveAsTextFile</span><span class="o">(</span><span class="s">&quot;hdfs://PATH&quot;</span><span class="o">)</span>
-<span class="n">objectRDD</span><span class="o">.</span><span class="n">rawSpatialRDD</span><span class="o">.</span><span class="n">saveAsWKT</span><span class="o">(</span><span class="s">&quot;hdfs://PATH&quot;</span><span class="o">)</span>
+<span class="n">objectRDD</span><span class="o">.</span><span class="n">saveAsWKT</span><span class="o">(</span><span class="s">&quot;hdfs://PATH&quot;</span><span class="o">)</span>
 </pre></div>
 
 <h4 id="save-to-distributed-wkb-text-file">Save to distributed WKB text file<a class="headerlink" href="#save-to-distributed-wkb-text-file" title="Permanent link">&para;</a></h4>
