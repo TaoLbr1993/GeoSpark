@@ -1778,21 +1778,21 @@ jars for GeoSparkSQL instead of geospark/jars/../geospark-sql jars files.</p>
 <p>This package automatically copies the newest GeoSpark jar files using upload_jars function, please follow the example below.</p>
 <li> upload_jars </li>
 
-<div class="codehilite"><pre><span></span>  <span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
 
-  <span class="kn">from</span> <span class="nn">geospark.register</span> <span class="kn">import</span> <span class="n">upload_jars</span>
-  <span class="kn">from</span> <span class="nn">geospark.register</span> <span class="kn">import</span> <span class="n">GeoSparkRegistrator</span>
+<span class="kn">from</span> <span class="nn">geospark.register</span> <span class="kn">import</span> <span class="n">upload_jars</span>
+<span class="kn">from</span> <span class="nn">geospark.register</span> <span class="kn">import</span> <span class="n">GeoSparkRegistrator</span>
 
-  <span class="n">upload_jars</span><span class="p">()</span>
+<span class="n">upload_jars</span><span class="p">()</span>
 
-  <span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span>\
-        <span class="n">getOrCreate</span><span class="p">()</span>
+<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span>\
+      <span class="n">getOrCreate</span><span class="p">()</span>
 
-  <span class="n">GeoSparkRegistrator</span><span class="o">.</span><span class="n">registerAll</span><span class="p">(</span><span class="n">spark</span><span class="p">)</span>
+<span class="n">GeoSparkRegistrator</span><span class="o">.</span><span class="n">registerAll</span><span class="p">(</span><span class="n">spark</span><span class="p">)</span>
 </pre></div>
 
 <p>Function</p>
-<div class="codehilite"><pre><span></span>  <span class="n">upload_jars</span><span class="p">()</span>
+<div class="codehilite"><pre><span></span><span class="n">upload_jars</span><span class="p">()</span>
 </pre></div>
 
 <p>uses findspark Python package to upload jar files to executor and nodes. To avoid copying all the time, jar files can be put in directory SPARK_HOME/jars or any other path specified in Spark config files.</p>
@@ -1806,11 +1806,11 @@ jars for GeoSparkSQL instead of geospark/jars/../geospark-sql jars files.</p>
 </pre></div>
 
 <p>or</p>
-<div class="codehilite"><pre><span></span>  pip install dist/geospark-1.3.1-py3-none-any.whl
+<div class="codehilite"><pre><span></span>pip install dist/geospark-1.3.1-py3-none-any.whl
 </pre></div>
 
 <h3 id="installing-from-source">Installing from source<a class="headerlink" href="#installing-from-source" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span>  python3 setup.py install
+<div class="codehilite"><pre><span></span>python3 setup.py install
 </pre></div>
 
 <h2 id="geospark-serializers">GeoSpark Serializers<a class="headerlink" href="#geospark-serializers" title="Permanent link">&para;</a></h2>
@@ -1832,7 +1832,8 @@ jars for GeoSparkSQL instead of geospark/jars/../geospark-sql jars files.</p>
 To pass the format to SpatialRDD constructor please use <b> FileDataSplitter </b> enumeration. </p>
 <p>geospark SpatialRDDs (and other classes when it was necessary) have implemented meta classes which allow 
 to use overloaded functions how Scala/Java GeoSpark API allows. ex. </p>
-<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">geospark.core.SpatialRDD</span> <span class="kn">import</span> <span class="n">PointRDD</span>
+<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark</span> <span class="kn">import</span> <span class="n">StorageLevel</span>
+<span class="kn">from</span> <span class="nn">geospark.core.SpatialRDD</span> <span class="kn">import</span> <span class="n">PointRDD</span>
 <span class="kn">from</span> <span class="nn">geospark.core.enums</span> <span class="kn">import</span> <span class="n">FileDataSplitter</span>
 
 <span class="n">input_location</span> <span class="o">=</span> <span class="s2">&quot;checkin.csv&quot;</span>
@@ -1876,7 +1877,7 @@ to use overloaded functions how Scala/Java GeoSpark API allows. ex. </p>
 <div class="codehilite"><pre><span></span><span class="n">spatial_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        SELECT ST_GeomFromWKT(_c0) as geom, _c6 as county_name</span>
-<span class="sd">        FROM inputtable</span>
+<span class="sd">        FROM counties</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <span class="p">)</span>
 <span class="n">spatial_df</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
@@ -1896,8 +1897,9 @@ to use overloaded functions how Scala/Java GeoSpark API allows. ex. </p>
 <span class="n">spatial_rdd</span><span class="o">.</span><span class="n">analyze</span><span class="p">()</span>
 
 <span class="n">spatial_rdd</span><span class="o">.</span><span class="n">boundaryEnvelope</span>
+</pre></div>
 
-<span class="o">&lt;</span><span class="n">geospark</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">geom_types</span><span class="o">.</span><span class="n">Envelope</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7f1e5f29fe10</span><span class="o">&gt;</span>
+<div class="codehilite"><pre><span></span>&lt;geospark.core.geom_types.Envelope object at 0x7f1e5f29fe10&gt;
 </pre></div>
 
 <p>or pass Geometry column name as a second argument</p>
@@ -1962,23 +1964,25 @@ GeoSpark will build a local tree index on each of the SpatialRDD partition.</p>
 Python objects when using collect method.
 Example:</p>
 <div class="codehilite"><pre><span></span><span class="n">query_result</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">geom</span><span class="o">.</span><span class="n">length</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+</pre></div>
 
-<span class="p">[</span>
- <span class="mf">1.5900840000000045</span><span class="p">,</span>
- <span class="mf">1.5906639999999896</span><span class="p">,</span>
- <span class="mf">1.1110299999999995</span><span class="p">,</span>
- <span class="mf">1.1096700000000084</span><span class="p">,</span>
- <span class="mf">1.1415619999999933</span><span class="p">,</span>
- <span class="mf">1.1386399999999952</span><span class="p">,</span>
- <span class="mf">1.1415619999999933</span><span class="p">,</span>
- <span class="mf">1.1418860000000137</span><span class="p">,</span>
- <span class="mf">1.1392780000000045</span><span class="p">,</span>
- <span class="o">...</span>
-<span class="p">]</span>
+<div class="codehilite"><pre><span></span>[
+ 1.5900840000000045,
+ 1.5906639999999896,
+ 1.1110299999999995,
+ 1.1096700000000084,
+ 1.1415619999999933,
+ 1.1386399999999952,
+ 1.1415619999999933,
+ 1.1418860000000137,
+ 1.1392780000000045,
+ ...
+]
 </pre></div>
 
 <p>Or transformed to GeoPandas GeoDataFrame</p>
-<div class="codehilite"><pre><span></span><span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">geopandas</span> <span class="kn">as</span> <span class="nn">gpd</span>
+<span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span>
     <span class="n">query_result</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">geom</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">userData</span><span class="p">])</span><span class="o">.</span><span class="n">collect</span><span class="p">(),</span>
     <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;geom&quot;</span><span class="p">,</span> <span class="s2">&quot;user_data&quot;</span><span class="p">],</span>
     <span class="n">geometry</span><span class="o">=</span><span class="s2">&quot;geom&quot;</span>
@@ -2050,14 +2054,16 @@ The list has K GeoData objects.</p>
 <p>Result of SpatialJoinQuery is RDD which consists of GeoData instance and list of GeoData instances which spatially intersects or 
 are covered by GeoData. </p>
 <div class="codehilite"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">collect</span><span class="p">())</span>
-<span class="p">[</span>
-    <span class="p">[</span><span class="n">GeoData</span><span class="p">,</span> <span class="p">[</span><span class="n">GeoData</span><span class="p">,</span> <span class="n">GeoData</span><span class="p">,</span> <span class="n">GeoData</span><span class="p">,</span> <span class="n">GeoData</span><span class="p">]],</span>
-    <span class="p">[</span><span class="n">GeoData</span><span class="p">,</span> <span class="p">[</span><span class="n">GeoData</span><span class="p">,</span> <span class="n">GeoData</span><span class="p">,</span> <span class="n">GeoData</span><span class="p">]],</span>
-    <span class="p">[</span><span class="n">GeoData</span><span class="p">,</span> <span class="p">[</span><span class="n">GeoData</span><span class="p">]],</span>
-    <span class="p">[</span><span class="n">GeoData</span><span class="p">,</span> <span class="p">[</span><span class="n">GeoData</span><span class="p">,</span> <span class="n">GeoData</span><span class="p">]],</span>
-    <span class="o">...</span>
-    <span class="p">[</span><span class="n">GeoData</span><span class="p">,</span> <span class="p">[</span><span class="n">GeoData</span><span class="p">,</span> <span class="n">GeoData</span><span class="p">]]</span>
-<span class="p">]</span>
+</pre></div>
+
+<div class="codehilite"><pre><span></span>[
+    [GeoData, [GeoData, GeoData, GeoData, GeoData]],
+    [GeoData, [GeoData, GeoData, GeoData]],
+    [GeoData, [GeoData]],
+    [GeoData, [GeoData, GeoData]],
+    ...
+    [GeoData, [GeoData, GeoData]]
+]
 </pre></div>
 
 <h3 id="use-spatial-partitioning">Use spatial partitioning<a class="headerlink" href="#use-spatial-partitioning" title="Permanent link">&para;</a></h3>
@@ -2103,16 +2109,18 @@ Polygon,LineString
 
 <p>example 
 <div class="codehilite"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
-<span class="p">[</span>
- <span class="p">[</span><span class="n">GeoData</span><span class="p">,</span> <span class="n">GeoData</span><span class="p">],</span>
- <span class="p">[</span><span class="n">GeoData</span><span class="p">,</span> <span class="n">GeoData</span><span class="p">],</span>
- <span class="p">[</span><span class="n">GeoData</span><span class="p">,</span> <span class="n">GeoData</span><span class="p">],</span>
- <span class="p">[</span><span class="n">GeoData</span><span class="p">,</span> <span class="n">GeoData</span><span class="p">],</span>
- <span class="o">...</span>
- <span class="p">[</span><span class="n">GeoData</span><span class="p">,</span> <span class="n">GeoData</span><span class="p">],</span>
- <span class="p">[</span><span class="n">GeoData</span><span class="p">,</span> <span class="n">GeoData</span><span class="p">]</span>
-<span class="p">]</span>
 </pre></div></p>
+<div class="codehilite"><pre><span></span>[
+ [GeoData, GeoData],
+ [GeoData, GeoData],
+ [GeoData, GeoData],
+ [GeoData, GeoData],
+ ...
+ [GeoData, GeoData],
+ [GeoData, GeoData]
+]
+</pre></div>
+
 <p>Each object on the left is covered/intersected by the object on the right.</p>
 <h2 id="write-a-distance-join-query">Write a Distance Join Query<a class="headerlink" href="#write-a-distance-join-query" title="Permanent link">&para;</a></h2>
 <p>A distance join query takes two spatial RDD assuming that we have two SpatialRDD's:
@@ -2143,18 +2151,22 @@ can be any geometry type (point, line, polygon) and are not necessary to have th
 <p>Result for this query is RDD which holds two GeoData objects within list of lists.
 Example:
 <div class="codehilite"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
-<span class="p">[[</span><span class="n">GeoData</span><span class="p">,</span> <span class="n">GeoData</span><span class="p">],</span> <span class="p">[</span><span class="n">GeoData</span><span class="p">,</span> <span class="n">GeoData</span><span class="p">]</span> <span class="o">...</span><span class="p">]</span>
 </pre></div></p>
+<div class="codehilite"><pre><span></span>[[GeoData, GeoData], [GeoData, GeoData] ...]
+</pre></div>
+
 <p>It is possible to do some RDD operation on result data ex. Getting polygon centroid.
 <div class="codehilite"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">geom</span><span class="o">.</span><span class="n">centroid</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
-<span class="p">[</span>
- <span class="o">&lt;</span><span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">Point</span> <span class="n">at</span> <span class="mh">0x7efee2d28128</span><span class="o">&gt;</span><span class="p">,</span>
- <span class="o">&lt;</span><span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">Point</span> <span class="n">at</span> <span class="mh">0x7efee2d280b8</span><span class="o">&gt;</span><span class="p">,</span>
- <span class="o">&lt;</span><span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">Point</span> <span class="n">at</span> <span class="mh">0x7efee2d28fd0</span><span class="o">&gt;</span><span class="p">,</span>
- <span class="o">&lt;</span><span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">Point</span> <span class="n">at</span> <span class="mh">0x7efee2d28080</span><span class="o">&gt;</span><span class="p">,</span>
- <span class="o">...</span>
-<span class="p">]</span>
 </pre></div></p>
+<div class="codehilite"><pre><span></span>[
+ &lt;shapely.geometry.point.Point at 0x7efee2d28128&gt;,
+ &lt;shapely.geometry.point.Point at 0x7efee2d280b8&gt;,
+ &lt;shapely.geometry.point.Point at 0x7efee2d28fd0&gt;,
+ &lt;shapely.geometry.point.Point at 0x7efee2d28080&gt;,
+ ...
+]
+</pre></div>
+
 <h2 id="save-to-permanent-storage">Save to permanent storage<a class="headerlink" href="#save-to-permanent-storage" title="Permanent link">&para;</a></h2>
 <p>You can always save an SpatialRDD back to some permanent storage such as HDFS and Amazon S3. You can save distributed SpatialRDD to WKT, GeoJSON and object files.</p>
 <div class="admonition note">
@@ -2165,7 +2177,7 @@ Example:
 <p>Typed SpatialRDD and generic SpatialRDD can be saved to permanent storage.</p>
 <h4 id="save-to-distributed-wkt-text-file">Save to distributed WKT text file<a class="headerlink" href="#save-to-distributed-wkt-text-file" title="Permanent link">&para;</a></h4>
 <p>Use the following code to save an SpatialRDD as a distributed WKT text file:</p>
-<div class="codehilite"><pre><span></span><span class="n">object_rdd</span><span class="o">.</span><span class="n">rawJvmSpatialRDD</span><span class="o">.</span><span class="n">saveAsTextFile</span><span class="p">(</span><span class="s2">&quot;hdfs://PATH&quot;</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><span class="n">object_rdd</span><span class="o">.</span><span class="n">rawSpatialRDD</span><span class="o">.</span><span class="n">saveAsTextFile</span><span class="p">(</span><span class="s2">&quot;hdfs://PATH&quot;</span><span class="p">)</span>
 <span class="n">object_rdd</span><span class="o">.</span><span class="n">saveAsWKT</span><span class="p">(</span><span class="s2">&quot;hdfs://PATH&quot;</span><span class="p">)</span>
 </pre></div>
 
@@ -2201,7 +2213,7 @@ Example:
 <p>You can easily reload an SpatialRDD that has been saved to <mark>a distributed object file</mark>.</p>
 <h4 id="load-to-a-typed-spatialrdd">Load to a typed SpatialRDD<a class="headerlink" href="#load-to-a-typed-spatialrdd" title="Permanent link">&para;</a></h4>
 <p>Use the following code to reload the PointRDD/PolygonRDD/LineStringRDD:</p>
-<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">geospark.core.formatMapper.disc_utils</span> <span class="kn">import</span> <span class="n">GeoType</span>
+<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">geospark.core.formatMapper.disc_utils</span> <span class="kn">import</span> <span class="n">load_spatial_rdd_from_disc</span><span class="p">,</span> <span class="n">GeoType</span>
 
 <span class="n">polygon_rdd</span> <span class="o">=</span> <span class="n">load_spatial_rdd_from_disc</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="s2">&quot;hdfs://PATH&quot;</span><span class="p">,</span> <span class="n">GeoType</span><span class="o">.</span><span class="n">POLYGON</span><span class="p">)</span>
 <span class="n">point_rdd</span> <span class="o">=</span> <span class="n">load_spatial_rdd_from_disc</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="s2">&quot;hdfs://PATH&quot;</span><span class="p">,</span> <span class="n">GeoType</span><span class="o">.</span><span class="n">POINT</span><span class="p">)</span>
@@ -2220,33 +2232,33 @@ Example:
 <h2 id="read-from-other-geometry-files">Read from other Geometry files<a class="headerlink" href="#read-from-other-geometry-files" title="Permanent link">&para;</a></h2>
 <p>All below methods will return SpatialRDD object which can be used with Spatial functions such as Spatial Join etc.</p>
 <h3 id="read-from-wkt-file">Read from WKT file<a class="headerlink" href="#read-from-wkt-file" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">geospark.core.formatMapper</span> <span class="kn">import</span> <span class="n">WktReader</span>
+<p><div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">geospark.core.formatMapper</span> <span class="kn">import</span> <span class="n">WktReader</span>
 
 <span class="n">WktReader</span><span class="o">.</span><span class="n">readToGeometryRDD</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">wkt_geometries_location</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
-<span class="o">&lt;</span><span class="n">geospark</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">SpatialRDD</span><span class="o">.</span><span class="n">spatial_rdd</span><span class="o">.</span><span class="n">SpatialRDD</span> <span class="n">at</span> <span class="mh">0x7f8fd2fbf250</span><span class="o">&gt;</span>
 </pre></div>
-
+<div class="codehilite"><pre><span></span>&lt;geospark.core.SpatialRDD.spatial_rdd.SpatialRDD at 0x7f8fd2fbf250&gt;
+</pre></div></p>
 <h3 id="read-from-wkb-file">Read from WKB file<a class="headerlink" href="#read-from-wkb-file" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">geospark.core.formatMapper</span> <span class="kn">import</span> <span class="n">WkbReader</span>
+<p><div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">geospark.core.formatMapper</span> <span class="kn">import</span> <span class="n">WkbReader</span>
 
-<span class="n">WkbReader</span><span class="o">.</span><span class="n">readToGeometryRDD</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">wkb_geometries</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
-<span class="o">&lt;</span><span class="n">geospark</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">SpatialRDD</span><span class="o">.</span><span class="n">spatial_rdd</span><span class="o">.</span><span class="n">SpatialRDD</span> <span class="n">at</span> <span class="mh">0x7f8fd2eece50</span><span class="o">&gt;</span>
+<span class="n">WkbReader</span><span class="o">.</span><span class="n">readToGeometryRDD</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">wkb_geometries_location</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
 </pre></div>
-
+<div class="codehilite"><pre><span></span>&lt;geospark.core.SpatialRDD.spatial_rdd.SpatialRDD at 0x7f8fd2eece50&gt;
+</pre></div></p>
 <h3 id="read-from-geojson-file">Read from GeoJson file<a class="headerlink" href="#read-from-geojson-file" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">geospark.core.formatMapper</span> <span class="kn">import</span> <span class="n">GeoJsonReader</span>
+<p><div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">geospark.core.formatMapper</span> <span class="kn">import</span> <span class="n">GeoJsonReader</span>
 
 <span class="n">GeoJsonReader</span><span class="o">.</span><span class="n">readToGeometryRDD</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">geo_json_file_location</span><span class="p">)</span>
-<span class="o">&lt;</span><span class="n">geospark</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">SpatialRDD</span><span class="o">.</span><span class="n">spatial_rdd</span><span class="o">.</span><span class="n">SpatialRDD</span> <span class="n">at</span> <span class="mh">0x7f8fd2eecb90</span><span class="o">&gt;</span>
 </pre></div>
-
+<div class="codehilite"><pre><span></span>&lt;geospark.core.SpatialRDD.spatial_rdd.SpatialRDD at 0x7f8fd2eecb90&gt;
+</pre></div></p>
 <h3 id="read-from-shapefile">Read from Shapefile<a class="headerlink" href="#read-from-shapefile" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">geospark.core.formatMapper.shapefileParser</span> <span class="kn">import</span> <span class="n">ShapefileReader</span>
+<p><div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">geospark.core.formatMapper.shapefileParser</span> <span class="kn">import</span> <span class="n">ShapefileReader</span>
 
 <span class="n">ShapefileReader</span><span class="o">.</span><span class="n">readToGeometryRDD</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">shape_file_location</span><span class="p">)</span>
-<span class="o">&lt;</span><span class="n">geospark</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">SpatialRDD</span><span class="o">.</span><span class="n">spatial_rdd</span><span class="o">.</span><span class="n">SpatialRDD</span> <span class="n">at</span> <span class="mh">0x7f8fd2ee0710</span><span class="o">&gt;</span>
 </pre></div>
-
+<div class="codehilite"><pre><span></span>&lt;geospark.core.SpatialRDD.spatial_rdd.SpatialRDD at 0x7f8fd2ee0710&gt;
+</pre></div></p>
 <h2 id="supported-versions">Supported versions<a class="headerlink" href="#supported-versions" title="Permanent link">&para;</a></h2>
 <p>Currently this python wrapper supports the following Spark, GeoSpark and Python versions</p>
 <h3 id="apache-spark">Apache Spark<a class="headerlink" href="#apache-spark" title="Permanent link">&para;</a></h3>
